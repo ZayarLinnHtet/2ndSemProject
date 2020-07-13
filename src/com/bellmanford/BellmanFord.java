@@ -1,5 +1,6 @@
 package com.bellmanford;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -9,6 +10,7 @@ public class BellmanFord {
     List<Edge> edgeList;
     String source;
 
+    HashMap<String, ArrayList<Edge>> adjEdgeList;
 
     public BellmanFord(List<String> verticeList, List<Edge> edgeList, String source) {
         this.verticeList = verticeList;
@@ -43,5 +45,52 @@ public class BellmanFord {
         for (String vertex: verticeList){
             System.out.println(vertex+"\t"+distance.get(vertex));
         }
+    }
+
+    public void findingPath(String source, String destination, List<Edge> edgeList){
+        HashMap<String, Boolean> isVisited = new HashMap<>();
+        ArrayList<String> pathList = new ArrayList<>();
+
+        adjEdgeList = new HashMap<>();
+        for (String s : verticeList){
+            adjEdgeList.put(s, new ArrayList<>());
+        }
+        for (Edge edge: edgeList){
+            adjEdgeList.get(edge.start).add(edge);
+        }
+
+        for (String s: verticeList){
+            isVisited.put(s, false);
+        }
+
+        pathList.add(source);
+
+        //Call recursive utility
+        getAllPaths(source, destination, isVisited, pathList);
+
+    }
+
+    private void getAllPaths(String source, String destination, HashMap<String, Boolean> isVisited, List<String> localPathList){
+
+        isVisited.put(source, true);
+
+        if (source.equals(destination)){
+            System.out.println(localPathList);
+            isVisited.put(source, false);
+            return;
+        }
+
+        for (Edge edge : adjEdgeList.get(source)){
+            if (!isVisited.get(edge.end)){
+                localPathList.add(edge.end);
+                getAllPaths(edge.end, destination, isVisited, localPathList);
+
+                //remove current node in path[]
+                localPathList.remove(edge.end);
+            }
+        }
+
+        //Mark the current node
+        isVisited.put(source, false);
     }
 }

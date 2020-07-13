@@ -30,6 +30,7 @@ public class MainBellmanFordApp {
 
         BellmanFord bellmanFord = new BellmanFord(vertixList, edgeList, start);
         bellmanFord.CalculateDistance();
+        bellmanFord.findingPath(start, "F", edgeList);
     }
 
 }
