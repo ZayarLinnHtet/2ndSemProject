@@ -10,16 +10,21 @@ public class BellmanFord {
     List<Edge> edgeList;
     String source;
 
+
+    HashMap<String, Double> distance;
     HashMap<String, ArrayList<Edge>> adjEdgeList;
+
+    List<Route> routeList = new ArrayList<>();
 
     public BellmanFord(List<String> verticeList, List<Edge> edgeList, String source) {
         this.verticeList = verticeList;
         this.edgeList = edgeList;
         this.source = source;
+
     }
 
     public void CalculateDistance(){
-        HashMap<String, Double> distance = new HashMap<>();
+        distance = new HashMap<>();
 
         for (String s : verticeList) {
             distance.put(s, Double.MAX_VALUE);
@@ -67,7 +72,6 @@ public class BellmanFord {
 
         //Call recursive utility
         getAllPaths(source, destination, isVisited, pathList);
-
     }
 
     private void getAllPaths(String source, String destination, HashMap<String, Boolean> isVisited, List<String> localPathList){
@@ -75,7 +79,8 @@ public class BellmanFord {
         isVisited.put(source, true);
 
         if (source.equals(destination)){
-            System.out.println(localPathList);
+            Double routeDistance = getRouteDistanceAndPrint(localPathList);
+            routeList.add(new Route(localPathList.toString(), routeDistance));
             isVisited.put(source, false);
             return;
         }
@@ -92,5 +97,32 @@ public class BellmanFord {
 
         //Mark the current node
         isVisited.put(source, false);
+    }
+
+    private Double getRouteDistanceAndPrint(List<String> pathList){
+        System.out.print(pathList + " => [");
+        Double d = 0.0;
+        for (String vertex : pathList){
+            d += distance.get(vertex);
+            System.out.print(" "+distance.get(vertex)+ " ");
+        }
+        System.out.println("] => "+d);
+
+        return d;
+    }
+
+    public void getShortestPath(){
+        Double d = Double.MAX_VALUE;
+        String path = "";
+        for (Route r : routeList){
+            if (r.distance<d){
+                d = r.distance;
+                path= r.vertices;
+            }
+        }
+
+        System.out.println();
+        System.out.println("The best rout => "+ path +" => "+ d);
+
     }
 }

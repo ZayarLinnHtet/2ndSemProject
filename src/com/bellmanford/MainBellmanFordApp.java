@@ -15,22 +15,22 @@ public class MainBellmanFordApp {
         vertixList.add("C");
         vertixList.add("D");
         vertixList.add("E");
-        vertixList.add("F");
 
-        edgeList.add(new Edge("A", "B", 5.0));
-        edgeList.add(new Edge("A", "D", 15.0));
-        edgeList.add(new Edge("B", "C", 15.0));
-        edgeList.add(new Edge("B", "D", 10.0));
-        edgeList.add(new Edge("C", "F", 5.0));
-        edgeList.add(new Edge("D", "C", 15.0));
-        edgeList.add(new Edge("D","E",15.0));
-        edgeList.add(new Edge("E","F",5.0));
+        edgeList.add(new Edge("A", "B", 1.0));
+        edgeList.add(new Edge("A", "D", 2.0));
+        edgeList.add(new Edge("B", "C", 2.0));
+        edgeList.add(new Edge("C", "D", 2.0));
+        edgeList.add(new Edge("C", "E", 8.0));
+        edgeList.add(new Edge("D", "C", 2.0));
+        edgeList.add(new Edge("D", "E",3.0));
 
         String start = "A";
+        String end = "E";
 
         BellmanFord bellmanFord = new BellmanFord(vertixList, edgeList, start);
         bellmanFord.CalculateDistance();
-        bellmanFord.findingPath(start, "F", edgeList);
+        bellmanFord.findingPath(start, end, edgeList);
+        bellmanFord.getShortestPath();
     }
 
 }
